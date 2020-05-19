@@ -9,24 +9,36 @@
 import UIKit
 
 
+
+  //
+ //MARK:- Passing New MovieList Protocol ->
+//
 protocol PassDataToUserListController {
     func passData(_ newMovie: UserList)
 }
 
+
+
 class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
     
     
-    
+     //
     //MARK:- Properties
+   //
     var userList:UserList?
     var deleget:PassDataToUserListController!
     let defultImage:UIImage = UIImage(named: "movie_poster")!
     
-    
+      //
+     //MARK:- IBOutlets
+    //
     @IBOutlet weak var addPhotoButton: UIButton!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var overviewTextField: UITextField!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
@@ -34,7 +46,10 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
     }
     
     
+    
+     //
     //MARK:- IBActions
+   //
     @IBAction func addImagePressed(_ sender: Any) {
         addImage()
         
@@ -42,7 +57,7 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
     
     
     @IBAction func donePressed(_ sender: Any) {
-        handelNewMovieAdd()
+        handelAddingNewMovie()
     }
     
 }
@@ -52,7 +67,7 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
 //MARK:- Private Functions
 extension AddNewMovieController{
     
-    fileprivate func handelNewMovieAdd(){
+    fileprivate func handelAddingNewMovie(){
         guard let title = titleTextField.text else { return }
         guard let date = dateTextField.text else { return }
         guard let overview = overviewTextField.text else { return }
@@ -76,7 +91,9 @@ extension AddNewMovieController{
 
 
 
-//MARK:- UIImagePicker Controller Deleget
+  //
+ //MARK:- UIImagePicker Controller Deleget
+//
 extension AddNewMovieController:UIImagePickerControllerDelegate{
     fileprivate func addImage(){
         let imagePickerController = UIImagePickerController()

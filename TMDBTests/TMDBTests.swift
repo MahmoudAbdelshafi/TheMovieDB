@@ -11,27 +11,44 @@ import XCTest
 
 class TMDBTests: XCTestCase {
     
+    var sut:APIClient!
     
+    //MARK:- TableView Test
     func testPopularMoviesControllerTableView(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(identifier: "popularMoviesController") as! PopularMoviesController
         _ = vc.view
-        
         XCTAssertNotNil(vc.tbView)
     }
+    
+    
+    //MARK:- Test APIClient
+    func testGetMoviesListRequest(){
+      APIClient.getMoviesListRequest(page: 1) { (data, error) in
+            XCTAssertNotNil(data)
+            XCTAssertNil(error)
+    
+        }
+        
+    }
+    
+   
 
 
+    
+    
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+       
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+     
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+      
     }
 
     func testPerformanceExample() throws {

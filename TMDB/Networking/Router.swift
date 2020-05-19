@@ -20,17 +20,17 @@ class Router {
         static let base = "https://api.themoviedb.org/3"
         static let apiKeyParam = "?api_key=\(Router.apiKey)"
         static let languageParam = "&language=en-US"
-        static let pageNumber = "page="
+        static let pageNumber = "&page="
         
         case moviesList
-        case posterImage
         
-        var url:URL {
+        
+        var url:String {
             switch self {
             case .moviesList:
-                return URL(string: EndPoints.base + "/movie/popular" + EndPoints.apiKeyParam + EndPoints.languageParam)!
-            case .posterImage:
-                return URL(string: EndPoints.imageBase)!
+                return (EndPoints.base + "/discover/movie" + EndPoints.apiKeyParam + EndPoints.languageParam + EndPoints.pageNumber)
+                
+                
             }
         }
         
@@ -49,20 +49,20 @@ class Router {
         var method: HTTPMethod {
             switch self {
             case .moviesList: return .get
-            case .posterImage: return .get
+                
             }
         }
         
-    
+        
         
         
         //MARK:- URLRequest Method
-        func buildUrlRequest()-> (URLRequest){
-            var urlRequest = URLRequest(url: url)
+        func buildUrlRequest(Page:String?)-> (URLRequest?){
+            let urlMovieString = url + Page!
+            let movieUrl = URL(string: urlMovieString)
+            var urlRequest = URLRequest(url:movieUrl!)
             urlRequest.httpMethod = method.value
             switch self {
-            case.posterImage:
-                return urlRequest
             case .moviesList :
                 return urlRequest
                 

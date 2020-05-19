@@ -13,11 +13,9 @@ class APIClient {
     
     
     //MARK:- Get MoviesList Request
-    class func getMoviesListRequest(completion: @escaping (MoviesList?, Error?) -> Void){
-        
-        let urlRequest = Router.EndPoints.moviesList.url
-        
-        print(urlRequest)
+    class func getMoviesListRequest(page:Int ,completion: @escaping (MoviesList?, Error?) -> Void){
+        let pageNumber = (String(describing: page))
+        guard let urlRequest = Router.EndPoints.moviesList.buildUrlRequest(Page: pageNumber) else {return }
         let session = URLSession.shared
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error{
@@ -29,9 +27,10 @@ class APIClient {
                 let moviesList = try decoder.decode(MoviesList.self, from: data)
                 completion(moviesList , nil)
             }catch{
-               print("docoding error")
+                completion( nil ,nil)
+                print("docoding error")
             }
-            }
+        }
         task.resume()
         
     }
@@ -39,43 +38,24 @@ class APIClient {
     
     
     
-    
+    //MARK:- Get Poster Image Request
     class func getPosterImage(_ imagePram:String , completion:@escaping (UIImage?,Error? )->Void){
         let url = URL(string: Router.EndPoints.imageBase + imagePram)
         URLSession.shared.dataTask(with: url!) { (data, response, error) in
             if error != nil{
                 print(error!)
-               completion(nil,error)
+                completion(nil,error)
             }
             guard let dataImage = UIImage(data: data!) else {return}
             completion(dataImage,nil)
         }.resume()
-            
+        
     }
     
     
-    class func getData(_ page:Int ,completion: @escaping (MoviesList?, Error?) -> Void){
-        let url = URL(string:"https://api.themoviedb.org/3/movie/popular?api_key=840d9830ce5ea69425c3f231dbc1f7b3&language=en-US&page="+"\(page)")
-                      
-               URLSession.shared.dataTask(with: url!) { (data, response, error) in
-                   if error != nil{
-                       print(error!)
-                      completion(nil,error)
-                   }
-                do{
-                    let decoder = JSONDecoder()
-                    let moviesList = try decoder.decode(MoviesList.self, from: data!)
-                   completion(moviesList,nil)
-                }catch{
-                    completion(nil,error)
-                    print(error)
-                }
-                
-               }.resume()
-    }
     
     
-    }
-    
-    
+}
+
+
 

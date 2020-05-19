@@ -96,6 +96,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		396C6FEC24748420009F2F63 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				39EE6A222471945C00EC3DCB /* MoviesCell.swift */,
+				399182F22472ED37008876C5 /* ListCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		399182F8247332A1008876C5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,8 +217,7 @@
 		39EE6A212471942300EC3DCB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				39EE6A222471945C00EC3DCB /* MoviesCell.swift */,
-				399182F22472ED37008876C5 /* ListCell.swift */,
+				396C6FEC24748420009F2F63 /* Cells */,
 			);
 			path = View;
 			sourceTree = "<group>";

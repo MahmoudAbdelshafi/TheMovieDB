@@ -11,10 +11,10 @@ import UIKit
 class PopularMoviesController: UIViewController {
     
     
-    
+  
+
     //MARK:- Properties
     private var cellId = "MoviesCell"
-    
     private var gettingData = false
     private var currentPage = 1
     private var refresher:UIRefreshControl?
@@ -43,8 +43,8 @@ class PopularMoviesController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         spinner.stopAnimating()
-        handelDataRequest()
-        
+        handelGetMoviesListRequest()
+       
     }
     
     
@@ -57,8 +57,12 @@ class PopularMoviesController: UIViewController {
 
 //MARK:- Private Functions
 extension PopularMoviesController{
-    fileprivate func handelDataRequest(){
-        APIClient.getData(currentPage) { (movies, error) in
+    
+    fileprivate func handelGetMoviesListRequest(){
+        APIClient.getMoviesListRequest(page: currentPage) { (movies, error) in
+            if error != nil{
+                return
+            }
             if let movies = movies{
                 self.moviesData = movies
                 DispatchQueue.main.async {
@@ -69,12 +73,16 @@ extension PopularMoviesController{
     }
     
     
-  
+    //Fetching more Movies
     fileprivate func getNextPageData(){
         if currentPage < moviesData!.totalPages{
             gettingData = true
             currentPage += 1
-            APIClient.getData(currentPage) { (movies, error) in
+            APIClient.getMoviesListRequest(page: currentPage) { (movies, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
                 if let movies = movies{
                     self.results?.append(contentsOf: movies.results)
                     DispatchQueue.main.async {
@@ -99,6 +107,7 @@ extension PopularMoviesController{
 
 
 //MARK:- TableView DataSource Methods
+
 extension PopularMoviesController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results?.count ?? 0
@@ -111,7 +120,7 @@ extension PopularMoviesController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! MoviesCell
         let images = results
         if let image = images?[indexPath.item].posterPath {
-            //get Images Request
+            //Get Images Request
             if moviesData != nil{
                 APIClient.getPosterImage(image) { (imagData, error) in
                     if let error = error{
@@ -131,7 +140,7 @@ extension PopularMoviesController: UITableViewDataSource{
         return cell
     }
     
-  
+    
     
     
     
@@ -146,7 +155,7 @@ extension PopularMoviesController: UITableViewDataSource{
 
 
 //MARK:- TableView Prefetching Method
-extension PopularMoviesController:UITableViewDataSourcePrefetching {
+extension PopularMoviesController:UITableViewDataSourcePrefetching{
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for  index in indexPaths{
             if index.row == results!.count - 1 {
@@ -161,6 +170,5 @@ extension PopularMoviesController:UITableViewDataSourcePrefetching {
         }
         
     }
-    
     
 }
