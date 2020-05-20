@@ -59,6 +59,7 @@ class PopularMoviesController: UIViewController {
 extension PopularMoviesController{
     
     fileprivate func handelGetMoviesListRequest(){
+        spinner.startAnimating()
         APIClient.getMoviesListRequest(page: currentPage) { (movies, error) in
             if error != nil{
                 return
@@ -70,6 +71,7 @@ extension PopularMoviesController{
                 }
             }
         }
+        
     }
     
     
@@ -120,6 +122,7 @@ extension PopularMoviesController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! MoviesCell
         let images = results
         if let image = images?[indexPath.item].posterPath {
+            cell.posterImage.image = nil
             //Get Images Request
             if moviesData != nil{
                 APIClient.getPosterImage(image) { (imagData, error) in

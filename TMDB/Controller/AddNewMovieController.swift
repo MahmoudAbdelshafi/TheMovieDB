@@ -28,6 +28,7 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
     var userList:UserList?
     var deleget:PassDataToUserListController!
     let defultImage:UIImage = UIImage(named: "movie_poster")!
+    let datePicker = UIDatePicker()
     
       //
      //MARK:- IBOutlets
@@ -41,7 +42,7 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        creatDatePicker()
         hideKeyboardWhenTappedAround()
         
     }
@@ -67,6 +68,25 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
 
 //MARK:- Private Functions
 extension AddNewMovieController{
+    
+    fileprivate func creatDatePicker(){
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(handelDoneButton))
+        toolBar.setItems([doneButton], animated: true)
+        dateTextField.inputAccessoryView = toolBar
+        dateTextField.inputView = datePicker
+        datePicker.datePickerMode = .date
+    }
+    
+    
+    @objc fileprivate func handelDoneButton(){
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.dateFormat = "yyyy-MM-dd"
+        dateTextField.text = formatter.string(from: datePicker.date)
+        self.view.endEditing(true)
+    }
     
     fileprivate func handelAddingNewMovie(){
         guard let title = titleTextField.text else { return }

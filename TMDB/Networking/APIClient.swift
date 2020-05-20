@@ -45,6 +45,7 @@ class APIClient {
             if error != nil{
                 print(error!)
                 completion(nil,error)
+                return
             }
             guard let dataImage = UIImage(data: data!) else {return}
             completion(dataImage,nil)
