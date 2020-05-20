@@ -41,8 +41,9 @@ class AddNewMovieController: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         hideKeyboardWhenTappedAround()
-        addPhotoButton.layer.masksToBounds = true
+        
     }
     
     
